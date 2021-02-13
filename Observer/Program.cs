@@ -1,4 +1,6 @@
-﻿using Observer.ObserverConcept;
+﻿using Observer.Exercise1.ConcreteObserver;
+using Observer.Exercise1.ConcreteSubject;
+using Observer.ObserverConcept;
 using System;
 
 namespace Observer
@@ -21,6 +23,16 @@ namespace Observer
             subject.Detach(observerB);
 
             subject.SomeBusinessLogic();
+
+            //Exercice 1
+            var estacion = new EstacionMetereologica();
+            var dipositivoTemperatura = new DispositivoTiempoActual();
+            estacion.Attach(dipositivoTemperatura);
+            for (int i = 0; i < 10; i++)
+            {
+                estacion.medidasHanCambiado();
+            }
+            
         }
     }
 }
