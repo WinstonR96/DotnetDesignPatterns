@@ -1,4 +1,5 @@
-﻿using Flyweight.Flyweight;
+﻿using Flyweight.Exercise_1.FlyweightFactory;
+using Flyweight.Flyweight;
 using System;
 
 namespace Flyweight
@@ -7,52 +8,58 @@ namespace Flyweight
     {
         static void Main(string[] args)
         {
-            //El código del cliente generalmente crea un montón de pesos mosca precargados en la 
-            //etapa de inicialización de la aplicación.
-            var factory = new FlyweightFactory(
-                new Car { Company = "Chevrolet", Model = "Camaro2018", Color = "pink" },
-                new Car { Company = "Mercedes Benz", Model = "C300", Color = "black" },
-                new Car { Company = "Mercedes Benz", Model = "C500", Color = "red" },
-                new Car { Company = "BMW", Model = "M5", Color = "red" },
-                new Car { Company = "BMW", Model = "X6", Color = "white" }
-            );
-            factory.listFlyweights();
+            ////El código del cliente generalmente crea un montón de flyweight precargados en la 
+            ////etapa de inicialización de la aplicación.
+            //// Arbitrary extrinsic state
 
-            addCarToPoliceDatabase(factory, new Car
+            //int extrinsicstate = 22;
+
+            //FlyweightFactory factory = new FlyweightFactory();
+
+            //// Work with different flyweight instances
+
+            //var fx = factory.GetFlyweight("X");
+            //fx.Operation(--extrinsicstate);
+
+            //var fy = factory.GetFlyweight("Y");
+            //fy.Operation(--extrinsicstate);
+
+            //var fz = factory.GetFlyweight("Z");
+            //fz.Operation(--extrinsicstate);
+
+            //var fa = factory.GetFlyweight("A");
+            //fa.Operation(--extrinsicstate);
+
+            //UnsharedConcreteFlyweight fu = new
+
+            //  UnsharedConcreteFlyweight();
+
+            //fu.Operation(--extrinsicstate);
+
+            // Ejercicio
+
+            // Definimos los tipos de árbol
+
+            string[] tipos = { "pino", "abeto", "sauce" };
+
+            // Obtenemos el número de árboles a dibujar por parámetro
+            Random r = new Random();
+            int num_arboles = r.Next(tipos.Length);
+
+            // Creamos la fábrica de Árboles
+
+            FabricaDeArboles f = new FabricaDeArboles();
+
+            for (int i = 0; i < num_arboles; i++)
+
             {
-                Number = "CL234IR",
-                Owner = "James Doe",
-                Company = "BMW",
-                Model = "M5",
-                Color = "red"
-            });
 
-            addCarToPoliceDatabase(factory, new Car
-            {
-                Number = "CL234IR",
-                Owner = "James Doe",
-                Company = "BMW",
-                Model = "X1",
-                Color = "red"
-            });
+                f.GetArbol(tipos[r.Next(tipos.Length)]).dibujar(r.Next(tipos.Length), r.Next(tipos.Length), r.Next(tipos.Length));
 
-            factory.listFlyweights();
-        }
+            }
 
-        public static void addCarToPoliceDatabase(FlyweightFactory factory, Car car)
-        {
-            Console.WriteLine("\nClient: Adding a car to database.");
 
-            var flyweight = factory.GetFlyweight(new Car
-            {
-                Color = car.Color,
-                Model = car.Model,
-                Company = car.Company
-            });
-
-            // The client code either stores or calculates extrinsic state and
-            // passes it to the flyweight's methods.
-            flyweight.Operation(car);
+            Console.ReadKey();
         }
     }
 }

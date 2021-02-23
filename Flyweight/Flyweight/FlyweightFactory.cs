@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,62 +7,22 @@ namespace Flyweight.Flyweight
 {
     public class FlyweightFactory
     {
-        private List<Tuple<Flyweight, string>> flyweights = new List<Tuple<Flyweight, string>>();
+        private Dictionary<string, ConcreteFlyweight> flyweights = new Dictionary<string, ConcreteFlyweight>();
 
-        public FlyweightFactory(params Car[] args)
+        // Constructor
+
+        public FlyweightFactory()
         {
-            foreach (var elem in args)
-            {
-                flyweights.Add(new Tuple<Flyweight, string>(new Flyweight(elem), this.getKey(elem)));
-            }
+            flyweights.Add("X", new ConcreteFlyweight());
+            flyweights.Add("Y", new ConcreteFlyweight());
+            flyweights.Add("Z", new ConcreteFlyweight());
         }
 
-        // Returns a Flyweight's string hash for a given state.
-        public string getKey(Car key)
+        public Flyweight GetFlyweight(string key)
         {
-            List<string> elements = new List<string>();
-
-            elements.Add(key.Model);
-            elements.Add(key.Color);
-            elements.Add(key.Company);
-
-            if (key.Owner != null && key.Number != null)
-            {
-                elements.Add(key.Number);
-                elements.Add(key.Owner);
-            }
-
-            elements.Sort();
-
-            return string.Join("_", elements);
-        }
-
-        // Returns an existing Flyweight with a given state or creates a new
-        // one.
-        public Flyweight GetFlyweight(Car sharedState)
-        {
-            string key = this.getKey(sharedState);
-
-            if (flyweights.Where(t => t.Item2 == key).Count() == 0)
-            {
-                Console.WriteLine("FlyweightFactory: Can't find a flyweight, creating new one.");
-                this.flyweights.Add(new Tuple<Flyweight, string>(new Flyweight(sharedState), key));
-            }
-            else
-            {
-                Console.WriteLine("FlyweightFactory: Reusing existing flyweight.");
-            }
-            return this.flyweights.Where(t => t.Item2 == key).FirstOrDefault().Item1;
-        }
-
-        public void listFlyweights()
-        {
-            var count = flyweights.Count;
-            Console.WriteLine($"\nFlyweightFactory: I have {count} flyweights:");
-            foreach (var flyweight in flyweights)
-            {
-                Console.WriteLine(flyweight.Item2);
-            }
+            if (!flyweights.ContainsKey(key))
+                flyweights.Add(key, new ConcreteFlyweight());
+            return ((Flyweight)flyweights[key]);
         }
     }
 }
